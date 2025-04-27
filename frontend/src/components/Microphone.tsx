@@ -23,6 +23,10 @@ const Microphone: React.FC = () => {
     const isRecordingRef = useRef(false);
     let counter = 0;
 
+    // Add new ref for tracking connection status
+    const isConnectingRef = useRef(false);
+    const reconnectAttemptsRef = useRef(5);
+
     const checkAudioLevel = () => {
         if (!analyserRef.current) return;
 
@@ -93,15 +97,84 @@ const Microphone: React.FC = () => {
         return new Blob([wavData], { type: 'audio/wav' });
     };
 
+    // WebSocket connection management
+    useEffect(() => {
+        const connectWebSocket = () => {
+            if (!isRecordingRef.current) return;
+            if (isConnectingRef.current) {
+                console.log('Already attempting to connect, skipping...');
+                return;
+            }
+
+            if (wsRef.current) {
+                console.log('Closing existing WebSocket connection...');
+                wsRef.current.close();
+                wsRef.current = null;
+            }
+
+            console.log(`Creating new WebSocket (attempt ${reconnectAttemptsRef.current})...`);
+            isConnectingRef.current = true;
+
+            try {
+                const ws = new WebSocket('wss://la-hacks-project.onrender.com/ws/test_client');
+                wsRef.current = ws;
+
+                ws.onopen = () => {
+                    console.log('WebSocket connected successfully');
+                    isConnectingRef.current = false;
+                    reconnectAttemptsRef.current = 5;
+                };
+
+                ws.onclose = (event) => {
+                    console.log(`WebSocket disconnected:`, event.code, event.reason);
+                    isConnectingRef.current = false;
+                    if (isRecordingRef.current && reconnectAttemptsRef.current > 0) {
+                        reconnectAttemptsRef.current--;
+                        setTimeout(connectWebSocket, 1000); // Add delay between reconnection attempts
+                    }
+                };
+
+                ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                    isConnectingRef.current = false;
+                    if (isRecordingRef.current && reconnectAttemptsRef.current > 0) {
+                        reconnectAttemptsRef.current--;
+                        setTimeout(connectWebSocket, 1000); // Add delay between reconnection attempts
+                    }
+                };
+            } catch (error) {
+                console.error('Error creating WebSocket:', error);
+                isConnectingRef.current = false;
+                if (isRecordingRef.current && reconnectAttemptsRef.current > 0) {
+                    reconnectAttemptsRef.current--;
+                    setTimeout(connectWebSocket, 1000); // Add delay between reconnection attempts
+                }
+            }
+        };
+
+        if (isRecordingRef.current) {
+            connectWebSocket();
+        }
+
+        // Cleanup function
+        return () => {
+            if (wsRef.current) {
+                console.log('Cleaning up WebSocket connection...');
+                wsRef.current.close();
+                wsRef.current = null;
+            }
+        };
+    }, [isRecordingRef.current]); // Only re-run when recording state changes
+
     const startRecording = async () => {
         try {
-            // Set recording state first
             setIsRecording(true);
             isRecordingRef.current = true;
+            reconnectAttemptsRef.current = 5; // Reset reconnection attempts
 
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: {
-                    sampleRate: 16000,  // Match Python script's rate
+                    sampleRate: 16000,
                     channelCount: 1,
                     echoCancellation: true,
                     noiseSuppression: true,
@@ -110,69 +183,8 @@ const Microphone: React.FC = () => {
             });
             streamRef.current = stream;
 
-            // Add WebSocket connection with improved error handling
-            let isConnecting = false;
-            let reconnectAttempts = 5;
-            const connectWebSocket = () => {
-                if (isConnecting) {
-                    console.log('Already attempting to connect, skipping...');
-                    return;
-                }
-
-                if (wsRef.current) {
-                    console.log('Closing existing WebSocket connection...');
-                    wsRef.current.close();
-                    wsRef.current = null;
-                }
-
-                console.log(`Creating new WebSocket (attempt ${reconnectAttempts + 1})...`);
-                isConnecting = true;
-                reconnectAttempts++;
-
-                try {
-                    const ws = new WebSocket('ws://la-hacks-project.onrender.com/ws/test_client');
-                    console.log('WebSocket created, setting up event handlers...');
-                    wsRef.current = ws;
-
-                    ws.onopen = () => {
-                        console.log('WebSocket connected successfully');
-                        isConnecting = false;
-                        reconnectAttempts = 5;
-                    };
-
-                    ws.onclose = (event) => {
-                        console.log(`WebSocket disconnected (attempt ${reconnectAttempts}):`, event.code, event.reason);
-                        isConnecting = false;
-                        if (isRecordingRef.current) {
-                            console.log('Immediately attempting reconnection...');
-                            connectWebSocket();
-                        }
-                    };
-
-                    ws.onerror = (error) => {
-                        console.error('WebSocket error:', error);
-                        isConnecting = false;
-                        if (isRecordingRef.current) {
-                            console.log('Immediately attempting reconnection after error...');
-                            connectWebSocket();
-                        }
-                    };
-                } catch (error) {
-                    console.error('Error creating WebSocket:', error);
-                    isConnecting = false;
-                    if (isRecordingRef.current) {
-                        console.log('Immediately attempting reconnection after creation error...');
-                        connectWebSocket();
-                    }
-                }
-            };
-
-            // Initial connection
-            console.log('Starting initial WebSocket connection...');
-            connectWebSocket();
-
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({
-                sampleRate: 16000  // Match Python script's rate
+                sampleRate: 16000
             });
 
             // Set up audio analyzer
@@ -202,26 +214,6 @@ const Microphone: React.FC = () => {
             processor.connect(audioContext.destination);
 
             checkAudioLevel();
-
-            // intervalRef.current = setInterval(() => {
-            //     if (audioData.length > 0) {
-            //         // Concatenate all audio data
-            //         const totalLength = audioData.reduce((acc, arr) => acc + arr.length, 0);
-            //         const concatenated = new Float32Array(totalLength);
-            //         let offset = 0;
-            //         audioData.forEach(arr => {
-            //             concatenated.set(arr, offset);
-            //             offset += arr.length;
-            //         });
-
-            //         // Create WAV blob
-            //         const wavBlob = createWavBlob(concatenated, audioContext.sampleRate);
-            //         setAudioChunks((prev) => [...prev, wavBlob]);
-
-            //         // Clear audio data
-            //         audioData.length = 0;
-            //     }
-            // }, 15000);
 
             // Add 2-second chunk collection and sending
             shortIntervalRef.current = setInterval(() => {
@@ -266,14 +258,8 @@ const Microphone: React.FC = () => {
                         // Clear audio data
                         audioData.length = 0;
                     }
-
-                    // Clear processed audio data
-                    // audioData.splice(0, startIndex + 1);
                 }
-            }, 1000);
-            
-
-
+            }, 500);
         } catch (error) {
             console.error('Error accessing microphone:', error);
         }
@@ -295,11 +281,6 @@ const Microphone: React.FC = () => {
         if (shortIntervalRef.current) {
             clearInterval(shortIntervalRef.current);
         }
-        // Add WebSocket cleanup
-        if (wsRef.current) {
-            wsRef.current.close();
-            wsRef.current = null;
-        }
         setIsRecording(false);
         isRecordingRef.current = false;
         setIsSpeaking(false);
@@ -316,7 +297,6 @@ const Microphone: React.FC = () => {
 
     const sendAudioToBackend = async (audioBlob: Blob) => {
         try {
-
             const formData = new FormData();
             const file = new File([audioBlob], "recording.wav", { type: "audio/wav" });
             formData.append('audio', file);
