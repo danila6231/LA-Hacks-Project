@@ -49,7 +49,7 @@ async def update_info(
         
         update_data = {}
         if audio:
-            print(f"Audio received: {audio.filename}, size: {audio.size}, content_type: {audio.content_type}")
+            # print(f"Audio received: {audio.filename}, size: {audio.size}, content_type: {audio.content_type}")
             if not audio.filename.lower().endswith('.wav'):
                 raise HTTPException(status_code=400, detail="Audio file must be in WAV format")
             
