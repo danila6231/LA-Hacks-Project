@@ -82,3 +82,7 @@ A real-time classroom assistance system that provides live captioning, translati
 - MongoDB
 - Snapchat Lens Studio
 - WebSockets for real-time communication
+
+
+## Credits
+- Settings Icon CC-BY 3.0: [Game-Icons.net](https://game-icons.net/)
