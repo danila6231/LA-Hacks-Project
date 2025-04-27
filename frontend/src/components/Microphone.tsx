@@ -15,6 +15,9 @@ const Microphone: React.FC = () => {
     const animationFrameRef = useRef<number | null>(null);
     const speakingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const silenceCounterRef = useRef<number>(0);
+    const wsRef = useRef<WebSocket | null>(null);
+    const shortIntervalRef = useRef<NodeJS.Timeout | null>(null);
+    const isRecordingRef = useRef(false);
 
     const checkAudioLevel = () => {
         if (!analyserRef.current) return;
@@ -88,9 +91,13 @@ const Microphone: React.FC = () => {
 
     const startRecording = async () => {
         try {
+            // Set recording state first
+            setIsRecording(true);
+            isRecordingRef.current = true;
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: {
-                    sampleRate: 44100,
+                    sampleRate: 16000,  // Match Python script's rate
                     channelCount: 1,
                     echoCancellation: true,
                     noiseSuppression: true,
@@ -99,7 +106,70 @@ const Microphone: React.FC = () => {
             });
             streamRef.current = stream;
 
-            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+            // Add WebSocket connection with improved error handling
+            let isConnecting = false;
+            let reconnectAttempts = 0;
+            const connectWebSocket = () => {
+                if (isConnecting) {
+                    console.log('Already attempting to connect, skipping...');
+                    return;
+                }
+
+                if (wsRef.current) {
+                    console.log('Closing existing WebSocket connection...');
+                    wsRef.current.close();
+                    wsRef.current = null;
+                }
+
+                console.log(`Creating new WebSocket (attempt ${reconnectAttempts + 1})...`);
+                isConnecting = true;
+                reconnectAttempts++;
+
+                try {
+                    const ws = new WebSocket('ws://localhost:8000/ws/test_client');
+                    console.log('WebSocket created, setting up event handlers...');
+                    wsRef.current = ws;
+
+                    ws.onopen = () => {
+                        console.log('WebSocket connected successfully');
+                        isConnecting = false;
+                        reconnectAttempts = 0;
+                    };
+
+                    ws.onclose = (event) => {
+                        console.log(`WebSocket disconnected (attempt ${reconnectAttempts}):`, event.code, event.reason);
+                        isConnecting = false;
+                        if (isRecordingRef.current) {
+                            console.log('Immediately attempting reconnection...');
+                            connectWebSocket();
+                        }
+                    };
+
+                    ws.onerror = (error) => {
+                        console.error('WebSocket error:', error);
+                        isConnecting = false;
+                        if (isRecordingRef.current) {
+                            console.log('Immediately attempting reconnection after error...');
+                            connectWebSocket();
+                        }
+                    };
+                } catch (error) {
+                    console.error('Error creating WebSocket:', error);
+                    isConnecting = false;
+                    if (isRecordingRef.current) {
+                        console.log('Immediately attempting reconnection after creation error...');
+                        connectWebSocket();
+                    }
+                }
+            };
+
+            // Initial connection
+            console.log('Starting initial WebSocket connection...');
+            connectWebSocket();
+
+            const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({
+                sampleRate: 16000  // Match Python script's rate
+            });
 
             // Set up audio analyzer
             const analyser = audioContext.createAnalyser();
@@ -109,40 +179,53 @@ const Microphone: React.FC = () => {
             analyserRef.current = analyser;
 
             // Set up script processor for audio processing
-            const processor = audioContext.createScriptProcessor(4096, 1, 1);
-            const audioData: Float32Array[] = [];
+            const CHUNK_SIZE = 16384;  // Match Python script's chunk size
+            const processor = audioContext.createScriptProcessor(CHUNK_SIZE, 1, 1);
+            const audioData: Int16Array[] = [];
 
             processor.onaudioprocess = (e) => {
                 const inputData = e.inputBuffer.getChannelData(0);
-                audioData.push(new Float32Array(inputData));
+                // Convert to Int16Array immediately to match Python's format
+                const pcmData = new Int16Array(inputData.length);
+                for (let i = 0; i < inputData.length; i++) {
+                    const s = Math.max(-1, Math.min(1, inputData[i]));
+                    pcmData[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                }
+                audioData.push(pcmData);
             };
 
             source.connect(processor);
             processor.connect(audioContext.destination);
 
-            setIsRecording(true);
             checkAudioLevel();
 
-            // Send audio chunks every 15 seconds
-            intervalRef.current = setInterval(() => {
-                if (audioData.length > 0) {
-                    // Concatenate all audio data
-                    const totalLength = audioData.reduce((acc, arr) => acc + arr.length, 0);
-                    const concatenated = new Float32Array(totalLength);
+            // Add 2-second chunk collection and sending
+            shortIntervalRef.current = setInterval(() => {
+                if (audioData.length > 0 && wsRef.current?.readyState === WebSocket.OPEN) {
+                    // Calculate how many chunks we need for 2 seconds
+                    const chunksPerSecond = Math.ceil(audioContext.sampleRate / CHUNK_SIZE);
+                    const targetChunks = chunksPerSecond * 2;
+
+                    // Get the last 2 seconds of audio
+                    const startIndex = Math.max(0, audioData.length - targetChunks);
+                    const lastTwoSeconds = audioData.slice(startIndex);
+
+                    // Concatenate the chunks
+                    const totalLength = lastTwoSeconds.reduce((acc, arr) => acc + arr.length, 0);
+                    const concatenated = new Int16Array(totalLength);
                     let offset = 0;
-                    audioData.forEach(arr => {
+                    lastTwoSeconds.forEach(arr => {
                         concatenated.set(arr, offset);
                         offset += arr.length;
                     });
 
-                    // Create WAV blob
-                    const wavBlob = createWavBlob(concatenated, audioContext.sampleRate);
-                    setAudioChunks((prev) => [...prev, wavBlob]);
+                    // Send raw PCM data
+                    wsRef.current?.send(concatenated.buffer);
 
-                    // Clear audio data
-                    audioData.length = 0;
+                    // Clear processed audio data
+                    audioData.splice(0, startIndex + 1);
                 }
-            }, 15000);
+            }, 2000); // Every 2 seconds
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
@@ -162,7 +245,16 @@ const Microphone: React.FC = () => {
         if (speakingTimeoutRef.current) {
             clearTimeout(speakingTimeoutRef.current);
         }
+        if (shortIntervalRef.current) {
+            clearInterval(shortIntervalRef.current);
+        }
+        // Add WebSocket cleanup
+        if (wsRef.current) {
+            wsRef.current.close();
+            wsRef.current = null;
+        }
         setIsRecording(false);
+        isRecordingRef.current = false;
         setIsSpeaking(false);
         silenceCounterRef.current = 0;
     };

@@ -47,7 +47,7 @@ async def update_info(
         
         update_data = {}
         if audio:
-            print(f"Audio received: {audio.filename}, size: {audio.size}, content_type: {audio.content_type}")
+            # print(f"Audio received: {audio.filename}, size: {audio.size}, content_type: {audio.content_type}")
             if not audio.filename.lower().endswith('.wav'):
                 raise HTTPException(status_code=400, detail="Audio file must be in WAV format")
             
@@ -57,7 +57,7 @@ async def update_info(
             # Process audio with Gemini
             try:
                 transcript = await process_audio(audio)
-                print(f"Transcript result: {transcript[:100]}...")  # Print first 100 chars
+                #print(f"Transcript result: {transcript[:100]}...")  # Print first 100 chars
                 
                 # Only save transcript if it doesn't contain an error message
                 if not transcript.startswith("Error:"):
