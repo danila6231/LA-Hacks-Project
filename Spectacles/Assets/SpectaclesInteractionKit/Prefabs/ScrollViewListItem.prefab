@@ -147,7 +147,7 @@
     []
   Name: Text 2
   Enabled: true
-  RenderOrder: 13
+  RenderOrder: 12
   StretchMode: Stretch
   VerticalAlignment: Center
   HorizontalAlignment: Left
@@ -159,7 +159,7 @@
   ShowEditingPreview: true
   TouchHandler: !<reference> 00000000-0000-0000-0000-000000000000
   SizeToFit: false
-  FontSize: 48
+  FontSize: 94
   Font: !<reference> 711473f0-eaf8-4cdb-8d22-e1d2e07c6345
   LayoutRect:
     left: -7.500000
@@ -167,7 +167,7 @@
     right: 7.500000
     top: 2.250000
   OverflowVertical: Shrink
-  OverflowHorizontal: Shrink
+  OverflowHorizontal: Wrap
   Fill: !<TextFill>
     Mode: Solid
     Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -285,9 +285,9 @@
   RawMode: true
   ForceBasic: true
   Anchor:
-    left: -1.000000
+    left: -1.450000
     bottom: 0.000000
-    right: -1.000000
+    right: -0.800000
     top: 0.000000
   Offset:
     left: 1.750000
@@ -435,15 +435,15 @@
   RawMode: true
   ForceBasic: true
   Anchor:
-    left: -0.500000
-    bottom: -0.200000
-    right: -0.300000
-    top: 0.600000
+    left: -0.750000
+    bottom: -0.800000
+    right: 0.650000
+    top: 0.800000
   Offset:
     left: 0.000000
     bottom: 0.000000
     right: 0.000000
-    top: -0.000000
+    top: 0.000000
 - !<ScreenTransform/7a45b71e-8721-43d9-9af0-538fd3eac175>
   PrefabRemaps:
     []
