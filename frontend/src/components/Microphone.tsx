@@ -270,7 +270,7 @@ const Microphone: React.FC = () => {
                     // Clear processed audio data
                     // audioData.splice(0, startIndex + 1);
                 }
-            }, 500);
+            }, 1000);
             
 
 
