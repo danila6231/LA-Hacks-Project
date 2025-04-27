@@ -7,18 +7,15 @@ import base64
 import os
 from pathlib import Path
 import tempfile
+from config import GEMINI_MODEL, GEMINI_LIGHT_MODEL
 
 load_dotenv()
-
-#PRO_MODEL = "gemini-2.5-pro-exp-03-25"
-MODEL = "gemini-2.0-flash"
-LIGHT_MODEL = "gemini-2.0-flash"
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 def combine_transcripts(transcripts: List[str]) -> str:
     response = client.models.generate_content(
-            model=MODEL,
+            model=GEMINI_MODEL,
             contents=[f"""
             These are 5 consecutive transcripts for the last 5 minutes of the ongoing student lecture split by the semi-colon: {";".join(transcripts)}. There might be less than 5 if it's the beginning of the lecture. Combine these transcripts into a single coherent transcript.
             """]
@@ -44,7 +41,7 @@ async def process_audio(audio) -> str:
             await audio.seek(0)
                 
         response = client.models.generate_content(
-            model=LIGHT_MODEL, contents=["Translate the audio to the english language. Do not use any other language", myfile]
+            model=GEMINI_LIGHT_MODEL, contents=["Translate the audio to the english language. Do not use any other language", myfile]
         )
 
         return response.text
@@ -62,7 +59,7 @@ async def generate_summary(transcript: str, previous_summary: str = "") -> str:
         Focus on the main concepts and key takeaways. Keep the summary coherent and flowing naturally.
         """
         response = client.models.generate_content(
-            model=MODEL,
+            model=GEMINI_MODEL,
             contents=[prompt]
         )
         return response.text
@@ -124,7 +121,7 @@ async def generate_questions(
     )
     
     response = client.models.generate_content(
-            model=MODEL,
+            model=GEMINI_MODEL,
             contents=[prompt],
             config=generate_content_config
     )

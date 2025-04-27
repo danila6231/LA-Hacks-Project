@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import tempfile
 import json
+from config import MAX_RECENT_CHUNKS
 
 from models.entry import (
     LectureBase,
@@ -71,8 +72,9 @@ async def update_info(
                     # Update recent audio chunks (keep last 5)
                     recent_chunks = lecture.get("recent_audio_chunks", [])
                     recent_chunks.append(audio_content)
-                    if len(recent_chunks) > 5:  # Keep only last 5 minutes
-                        recent_chunks = recent_chunks[-5:]
+                    if len(recent_chunks) > MAX_RECENT_CHUNKS:  
+                    # Keep only last 5 minutes
+                        recent_chunks = recent_chunks[-MAX_RECENT_CHUNKS:]
                     update_data["recent_audio_chunks"] = recent_chunks
             except Exception as e:
                 print(f"Gemini processing error: {str(e)}")

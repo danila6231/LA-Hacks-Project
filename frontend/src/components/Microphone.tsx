@@ -3,6 +3,7 @@ import { Button, Box } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import axios from 'axios';
+import { AUDIO_CHUNK_DURATION_MS } from '../config';
 
 const Microphone: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -142,7 +143,7 @@ const Microphone: React.FC = () => {
                     // Clear audio data
                     audioData.length = 0;
                 }
-            }, 15000);
+            }, AUDIO_CHUNK_DURATION_MS);
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
