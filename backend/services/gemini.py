@@ -61,11 +61,13 @@ async def generate_summary(transcript: str, previous_summary: str = "") -> str:
         
         Don't try to use markdown. Lenses don't support it.
         
-        Don't try to keep it too short - keep it as long as needed.
-        
         Try to keep the summary well structured - try to use new lines and bullet points. 
         
-        Avoid using the word "summary" in the response. Don't start the response with "Summary, Here is the summary...".
+        Avoid using the word "summary" in the response. Don't start the response with "Summary, Here is the summary..."
+       
+        Do not use more than 10 bullet points. Get rid of the older ones.
+        
+        If the lecture dramatically changes direction, start a new summary.
         """
         response = client.models.generate_content(
             model=GEMINI_MODEL,
@@ -102,6 +104,8 @@ async def generate_questions(
     
     
     TASK: Return 2-3 questions if the are no questions. If there are already al least 3 than feel free to discard the oldest 2. Never return more than 5 questions. Keep each question and answer short and concise.
+    
+    If the lecture dramatically changes direction, start a new set of questions.
     """
     
     content.append(prompt)
