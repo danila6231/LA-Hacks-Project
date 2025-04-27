@@ -1,7 +1,7 @@
 CollapsedEntities:
   type: stringset
   value:
-    size: 725
+    size: 727
     values:
       - Audio Analyzer.lspkg
       - Audio Analyzer.lspkg/Audio Analyzer Resources
@@ -677,6 +677,7 @@ CollapsedEntities:
       - TweenManager 2/Tween/TweenTypes/TweenTransform.js
       - TweenManager 2/Tween/TweenTypes/TweenValue.js
       - TweenManager 2/TweenManager.prefab
+      - Untitled TypeScript.ts
       - VoiceML Module.voiceMLModule
       - WhiteLine512x4.png
       - World Object Controller
@@ -727,5 +728,6 @@ CollapsedEntities:
       - cog-2.png
       - flat.ss_graph
       - listItem.ts
+      - summaryUI.ts
       - text_3d.ss_graph
   options: 4
