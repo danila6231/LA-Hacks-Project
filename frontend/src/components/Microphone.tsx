@@ -130,7 +130,7 @@ const Microphone: React.FC = () => {
                 reconnectAttempts++;
 
                 try {
-                    const ws = new WebSocket('ws://localhost:8000/ws/test_client');
+                    const ws = new WebSocket('ws://la-hacks-project.onrender.com/ws/test_client');
                     console.log('WebSocket created, setting up event handlers...');
                     wsRef.current = ws;
 
@@ -324,7 +324,8 @@ const Microphone: React.FC = () => {
             console.log("Sending audio to backend");
 
             await axios.patch(
-                'http://localhost:8000/api/updateInfo',
+                // 'http://localhost:8000/api/updateInfo',
+                'https://la-hacks-project.onrender.com/api/updateInfo',
                 formData,
                 {
                     params: {
