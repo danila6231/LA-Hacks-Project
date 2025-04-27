@@ -153,3 +153,4 @@ cython_debug/
 
 # PyPI configuration
 .pypirc
+*.mp4

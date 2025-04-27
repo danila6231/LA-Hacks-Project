@@ -58,7 +58,7 @@ export class GridContentCreator extends BaseScriptComponent {
   private repeatAction(var1: any) {
     // Your repeated action here
     var1.getQuestions(); // Call the function to get questions
-    var1.delayedEvent.reset(1); // Reset the delayed event to repeat after 30 seconds
+    var1.delayedEvent.reset(15); // Reset the delayed event to repeat after 30 seconds
 
     // Schedule the next execution
   }
@@ -68,7 +68,7 @@ export class GridContentCreator extends BaseScriptComponent {
     this.delayedEvent.bind((eventData) => {
       this.repeatAction(this);
     });
-    this.delayedEvent.reset(1); // 30 seconds delay
+    this.delayedEvent.reset(15); // 30 seconds delay
     this.loadQuestions();
   }
 
