@@ -1,3 +1,5 @@
+import { listItem } from "../../../../listItem";
+
 /**
  * This class is responsible for creating and positioning grid content items based on a specified prefab and item count. It instantiates the items and arranges them vertically with a specified offset.
  */
@@ -33,6 +35,9 @@ export class GridContentCreator extends BaseScriptComponent {
       const item = this.itemPrefab.instantiate(this.getSceneObject());
       item.getChild(0).getComponent("Component.Text").text =
         this.sampleJson["qa-pair"][i].question;
+      (
+        item.getChild(1).getComponent("Component.Script") as listItem
+      ).answerStr = this.sampleJson["qa-pair"][i].answer;
       const screenTransform = item.getComponent("Component.ScreenTransform");
       screenTransform.offsets.setCenter(new vec2(0, yStart + yOffset * i));
       item.enabled = true;
