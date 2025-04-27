@@ -28,7 +28,7 @@ async def process_audio(audio) -> str:
             await audio.seek(0)
                 
         response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=["Do the exact english transcription of the audio", myfile]
+            model="gemini-2.0-flash", contents=["Do the exact transcription of the audio in the english languange only", myfile]
         )
 
         print(response.text)

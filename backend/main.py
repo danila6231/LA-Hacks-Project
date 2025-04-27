@@ -1,6 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from routes.entries import router as entries_router
+from routes.websocket import websocket_endpoint
+import uuid
 
 app = FastAPI(
     title="AR Classroom Assistant API",
@@ -27,6 +29,10 @@ async def root():
         "docs_url": "/docs",
         "redoc_url": "/redoc"
     }
+
+@app.websocket("/ws/{client_id}")
+async def websocket_route(websocket: WebSocket, client_id: str):
+    await websocket_endpoint(websocket, client_id)
 
 '''
 if __name__ == "__main__":

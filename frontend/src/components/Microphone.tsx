@@ -123,7 +123,7 @@ const Microphone: React.FC = () => {
             setIsRecording(true);
             checkAudioLevel();
 
-            // Send audio chunks every 5 seconds
+            // Send audio chunks every 15 seconds
             intervalRef.current = setInterval(() => {
                 if (audioData.length > 0) {
                     // Concatenate all audio data
@@ -142,7 +142,7 @@ const Microphone: React.FC = () => {
                     // Clear audio data
                     audioData.length = 0;
                 }
-            }, 30000);
+            }, 15000);
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
@@ -183,9 +183,9 @@ const Microphone: React.FC = () => {
             formData.append('audio', file);
 
             console.log("Sending audio to backend");
-            
+
             await axios.patch(
-                'http://localhost:8000/api/updateInfo', 
+                'http://localhost:8000/api/updateInfo',
                 formData,
                 {
                     params: {
