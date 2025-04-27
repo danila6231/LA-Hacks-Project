@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 from pathlib import Path
 import tempfile
+import json
 
 from models.entry import (
     LectureBase,
@@ -135,18 +136,15 @@ async def request_questions(snap_user_id: str, lecture_id: str):
     )
     
     # Format response
-    formatted_questions = [
-        Question(question=q["question"], answer=q["answer"])
-        for q in questions_and_answers["qa-pair"]
-    ]
+    formatted_questions = json.loads(questions_and_answers)["qa-pair"]
     
     # Update the lecture document with new questions
     await lectures_collection.update_one(
         {"lecture_id": lecture_id},
-        {"$set": {"questions": [q.dict() for q in formatted_questions]}}
+        {"$set": {"questions": formatted_questions}}
     )
-    
-    return formatted_questions
+    print(formatted_questions)
+    return [Question(question=q['question'], answer=q['answer']) for q in formatted_questions]
 
 @router.post("/endLecture")
 async def end_lecture(snap_user_id: str):

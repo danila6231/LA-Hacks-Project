@@ -142,7 +142,7 @@ const Microphone: React.FC = () => {
                     // Clear audio data
                     audioData.length = 0;
                 }
-            }, 4500);
+            }, 15000);
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
@@ -189,8 +189,8 @@ const Microphone: React.FC = () => {
                 formData,
                 {
                     params: {
-                        snap_user_id: 'test_user',
-                        lecture_id: '2e312afe-b903-4da3-959d-235e3e3f8fc6'
+                        snap_user_id: 'test1',
+                        lecture_id: '1c10180b-32f4-47b0-948f-f3ea1f271a3e'
                     },
                     headers: {
                         'Content-Type': 'multipart/form-data',
