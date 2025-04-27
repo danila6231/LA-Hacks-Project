@@ -5,7 +5,6 @@
 export class GridContentCreator extends BaseScriptComponent {
   @input
   itemPrefab!: ObjectPrefab;
-
   private sampleJson = {
     "qa-pair": [
       {
@@ -32,7 +31,6 @@ export class GridContentCreator extends BaseScriptComponent {
 
     for (let i = 0; i < this.sampleJson["qa-pair"].length; i++) {
       const item = this.itemPrefab.instantiate(this.getSceneObject());
-
       item.getChild(0).getComponent("Component.Text").text =
         this.sampleJson["qa-pair"][i].question;
       const screenTransform = item.getComponent("Component.ScreenTransform");
