@@ -4,6 +4,23 @@
     - !<own> e31be21a-ec45-40ad-9e58-24db94f12412
   LazyLoading: false
   RetainAssets: true
+- !<ScriptComponent/0ddedb06-e586-4051-a932-462ef787c09f>
+  PrefabRemaps:
+    []
+  Name: listItem
+  Enabled: true
+  ScriptAsset: !<reference> d0938df2-c2d2-484d-9ec1-b2c89d9481d2
+  ScriptInputsDefault:
+    {}
+  ScriptTypesDefault:
+    {}
+  ScriptInputs:
+    "":
+      answerText: !<reference.Text> 85fe0561-9e97-4e73-9e13-42ce2178db3b
+      pinchButton: !<MappingBased.PinchButton> 33d94724-72c0-4dd5-b596-59cd3889078f
+  ScriptTypes:
+    "":
+      {}
 - !<BodyComponent/0eb17d3e-3b8b-4857-8d4c-addbcca1c3dd>
   PrefabRemaps:
     []
@@ -149,8 +166,8 @@
     bottom: -2.250000
     right: 7.500000
     top: 2.250000
-  OverflowVertical: Overflow
-  OverflowHorizontal: Overflow
+  OverflowVertical: Shrink
+  OverflowHorizontal: Shrink
   Fill: !<TextFill>
     Mode: Solid
     Color: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -301,6 +318,22 @@
   ScriptTypes:
     "":
       {}
+- !<SceneObject/5ba55745-5c6c-4b0c-926f-6a5c6958f829>
+  PrefabRemaps:
+    []
+  Name: listItem
+  Enabled: true
+  Layers: 1
+  LocalTransform:
+    position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  Children:
+    []
+  Components:
+    - !<own> 0ddedb06-e586-4051-a932-462ef787c09f
+    - !<own> 964fc3dc-462b-412e-a0e7-46048f32a30a
 - !<ScreenTransform/5f8df4e3-25ca-44ed-a52d-740e7c027d05>
   PrefabRemaps:
     []
@@ -403,14 +436,14 @@
   ForceBasic: true
   Anchor:
     left: -0.500000
-    bottom: 0.200000
-    right: 0.665100
-    top: 0.200000
+    bottom: -0.200000
+    right: -0.300000
+    top: 0.600000
   Offset:
-    left: -0.000000
-    bottom: -1.000000
+    left: 0.000000
+    bottom: 0.000000
     right: 0.000000
-    top: 1.000000
+    top: -0.000000
 - !<ScreenTransform/7a45b71e-8721-43d9-9af0-538fd3eac175>
   PrefabRemaps:
     []
@@ -460,6 +493,39 @@
   Components:
     - !<own> 68834a9f-1d51-4c08-8ca0-b122b13f34c7
     - !<own> 519af9cc-3d21-4a81-8c87-330a090acb36
+- !<ScreenTransform/964fc3dc-462b-412e-a0e7-46048f32a30a>
+  PrefabRemaps:
+    []
+  Name: Screen Transform
+  Enabled: true
+  IsAdvanced: false
+  Constraints:
+    pinToLeft: false
+    pinToTop: false
+    pinToRight: false
+    pinToBottom: false
+    fixedWidth: false
+    fixedHeight: false
+    deactivatedFixedSprite: false
+    deactivatedFixedPivot: false
+  Pivot: {x: 0.000000, y: 0.000000}
+  Transform:
+    position: {x: 0.000000, y: 0.000000, z: 0.000000}
+    rotation: {x: 0.000000, y: 0.000000, z: 0.000000}
+    scale: {x: 1.000000, y: 1.000000, z: 1.000000}
+    hasSegmentScaleCompensation: false
+  RawMode: true
+  ForceBasic: true
+  Anchor:
+    left: -1.000000
+    bottom: -1.000000
+    right: 1.000000
+    top: 1.000000
+  Offset:
+    left: 0.000000
+    bottom: 0.000000
+    right: 0.000000
+    top: 0.000000
 - !<ScreenTransform/a8ac14f5-2615-47c4-b61b-593452490ad5>
   PrefabRemaps:
     []
@@ -562,7 +628,7 @@
   PrefabRemaps:
     []
   Name: ScrollViewListItem
-  Enabled: true
+  Enabled: false
   Layers: 1
   LocalTransform:
     position: {x: 0.000000, y: 0.300000, z: 0.000000}
@@ -571,6 +637,7 @@
     hasSegmentScaleCompensation: false
   Children:
     - !<own> f08e435f-bec9-4198-81d2-0da88a1f73fd
+    - !<own> 5ba55745-5c6c-4b0c-926f-6a5c6958f829
     - !<own> 1bd34cdf-13f5-4f74-b3fb-4b165248f2e3
     - !<own> 8bad703e-738e-4d03-90a1-b1528f63c08c
     - !<own> 40fb4da2-bc8a-4ec3-afdf-c31a3efdc837

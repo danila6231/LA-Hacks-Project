@@ -27,14 +27,17 @@
   MaxVisibility: Editable
   ScriptInputsHidden:
     itemPrefab: false
+    serviceModule: false
   ScriptTypesHidden:
     {}
   DefaultScriptInputs:
     - itemPrefab: !<reference.ObjectPrefab> 00000000-0000-0000-0000-000000000000
+      serviceModule: !<reference.RemoteServiceModule> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input Asset.ObjectPrefab itemPrefab
+    - // @input Asset.RemoteServiceModule serviceModule
   SvgIcon: ""
   DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000

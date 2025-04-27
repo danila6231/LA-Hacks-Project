@@ -1,39 +1,42 @@
-- !<AssetImportMetadata/84ad5070-60bf-4d56-a62f-f402eae491f7>
+- !<AssetImportMetadata/0782e8ab-5e8d-412f-b53c-983abb75efd7>
   ImportedAssetIds:
-    TypeScriptAsset: !<reference> 2d93fd68-f3aa-43b3-b79e-83685c2996fe
+    TypeScriptAsset: !<reference> d0938df2-c2d2-484d-9ec1-b2c89d9481d2
   ImporterName: TypeScriptAssetImporter
-  PrimaryAsset: !<reference> 2d93fd68-f3aa-43b3-b79e-83685c2996fe
+  PrimaryAsset: !<reference> d0938df2-c2d2-484d-9ec1-b2c89d9481d2
   PackageType: NotAPackage
   PackagePolicy: CannotBeUnpacked
   ExtraData:
     {}
   AssetDataMap:
-    TypeScriptAsset: !<own> 492896ec-4b39-4416-a11c-2d684e9387f0
+    TypeScriptAsset: !<own> 661d2a11-6fb5-4dad-99ac-7cc8009a75a9
   DependentFiles:
     []
   ImporterSettings: !<AssetImporterSettings>
     {}
   CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
-- !<TypeScriptAssetData/492896ec-4b39-4416-a11c-2d684e9387f0>
+- !<TypeScriptAssetData/661d2a11-6fb5-4dad-99ac-7cc8009a75a9>
   SvgIcon: ""
   Description: ""
   InternalVersion: 0
   VersionMajor: 0
   VersionMinor: 0
   VersionPatch: 0
-  ComponentUid: 85092cdf-d1a5-4239-a712-55886d98e4a5
+  ComponentUid: 716a00fc-ad46-48df-bd37-75890ef5ab54
   ExportUid: 00000000-0000-0000-0000-000000000000
   CurrentVisibility: Editable
   MaxVisibility: Editable
   ScriptInputsHidden:
-    text: false
+    answerText: false
+    pinchButton: false
   ScriptTypesHidden:
     {}
   DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
   DefaultScriptInputs:
-    - text: ""
+    - answerText: !<reference.Text> 00000000-0000-0000-0000-000000000000
+      pinchButton: !<MappingBased.PinchButton> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
-    - // @input Component.Text text
+    - // @input Component.Text answerText
+    - // @input PinchButton pinchButton

@@ -8044,12 +8044,13 @@
   Enabled: true
   ScriptAsset: !<reference> 2ec5fda5-f028-4287-82f0-d39a734ee871
   ScriptInputsDefault:
-    {}
+    serviceModule: true
   ScriptTypesDefault:
     {}
   ScriptInputs:
     "":
       itemPrefab: !<reference.ObjectPrefab> 626fa2aa-cf28-45b6-beb9-16cdc571a1e7
+      serviceModule: !<reference.RemoteServiceModule> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     "":
       {}

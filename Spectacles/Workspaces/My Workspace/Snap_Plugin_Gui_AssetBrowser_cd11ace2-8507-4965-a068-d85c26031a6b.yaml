@@ -1,10 +1,8 @@
 CollapsedEntities:
   type: stringset
   value:
-    size: 729
+    size: 725
     values:
-      - 3D Text Layout
-      - 9 Slicing Material
       - Audio Analyzer.lspkg
       - Audio Analyzer.lspkg/Audio Analyzer Resources
       - Audio Analyzer.lspkg/Audio Analyzer Resources/Audio Tracks
@@ -45,27 +43,20 @@ CollapsedEntities:
       - Hint - Draw on the Wall/Custom Hint Resources/Scripts
       - Hint - Draw on the Wall/Custom Hint Resources/Scripts/CustomHint.js
       - Hint - Draw on the Wall/Hint - Draw on the Wall.prefab
-      - Hint - Swipe Up
-      - Hint - Tap (With Feedback)
-      - Hint - Try on Hand (Watches Tracking)
       - Image Picker Texture.imagePickerTexture
       - Image.mat
       - Microphone Audio.micaudio
-      - Object Layout
-      - Object Layout/.hidden
-      - Object Layout/Object Layout Resources
       - QAPanel.ts
       - QuestionMark512.png
       - Remote Service Module.remoteServiceModule
       - Render Target.renderTarget
       - Scene.scene
+      - Script 2.js
       - Script.js
-      - SpectaclesInteractionKit/Assets
       - SpectaclesInteractionKit/Assets/Audio
       - SpectaclesInteractionKit/Assets/Audio/HoverAudioTrack.wav
       - SpectaclesInteractionKit/Assets/Audio/TriggerEndAudioTrack.wav
       - SpectaclesInteractionKit/Assets/Audio/TriggerStartAudioTrack.wav
-      - SpectaclesInteractionKit/Assets/Materials
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials/FingerHighlightLeft.mat
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials/FingerHighlightRight.mat
@@ -151,7 +142,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Assets/Shaders/PinchDarkRadial.ss_graph
       - SpectaclesInteractionKit/Assets/Shaders/PlatformUI
       - SpectaclesInteractionKit/Assets/Shaders/PlatformUI/ButtonHover.ss_graph
-      - SpectaclesInteractionKit/Assets/Shaders/PlatformUI/ButtonIdle.ss_graph
       - SpectaclesInteractionKit/Assets/Shaders/PlatformUI/ButtonPinched.ss_graph
       - SpectaclesInteractionKit/Assets/Shaders/PlatformUI/CapsuleButtonHover.ss_graph
       - SpectaclesInteractionKit/Assets/Shaders/PlatformUI/CapsuleButtonPinched.ss_graph
@@ -537,7 +527,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Examples/RocketWorkshop/VFX/Rocket Sparks/Top_Rocket_Trail.ss_graph
       - SpectaclesInteractionKit/Examples/RocketWorkshop/VFX/Rocket Sparks/stripe_noise 2.png
       - SpectaclesInteractionKit/Examples/SIK Examples.prefab
-      - SpectaclesInteractionKit/Prefabs
       - SpectaclesInteractionKit/Prefabs/ScrollViewListItem.prefab
       - SpectaclesInteractionKit/Prefabs/SpectaclesInteractionKit.prefab
       - SpectaclesInteractionKit/Providers
@@ -626,7 +615,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Utils/views/MeshView.ts
       - SpectaclesInteractionKit/Utils/views/View.ts
       - SpectaclesInteractionKit/package.native
-      - Speech Recognition
       - Speech Recognition.lspkg
       - Speech Recognition.lspkg/Fonts
       - Speech Recognition.lspkg/Fonts/Urbanist-VariableFont_wght.ttf
@@ -658,6 +646,7 @@ CollapsedEntities:
       - Text3D 2.mat
       - Text3D 3.mat
       - Text3D.mat
+      - TweenManager 2
       - TweenManager 2/.hidden
       - TweenManager 2/.hidden/Image Unlit.ss_graph
       - TweenManager 2/.hidden/TweenBoxDiffuse.ss_graph
@@ -684,28 +673,30 @@ CollapsedEntities:
       - TweenManager 2/Tween/TweenTypes/TweenTransform.js
       - TweenManager 2/Tween/TweenTypes/TweenValue.js
       - TweenManager 2/TweenManager.prefab
-      - TweenManager/.hidden
-      - TweenManager/.hidden/Image Unlit.ss_graph
-      - TweenManager/.hidden/TweenBoxDiffuse.ss_graph
-      - "TweenManager/Tween/ExampleResources [REMOVE_ME]"
-      - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Materials"
-      - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Meshes"
-      - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Textures"
-      - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Textures/TweenImageTextures"
-      - TweenManager/Tween/TweenTypes
       - VoiceML Module.voiceMLModule
       - WhiteLine512x4.png
       - World Object Controller
-      - World Object Controller 2
       - World Object Controller 2/Materials
       - World Object Controller 2/Materials/graph_matte_shadow.mat
       - World Object Controller 2/Materials/ground_grid.mat
       - World Object Controller 2/Materials/sphere_diffuse.mat
       - World Object Controller 2/Materials/touch_collision.mat
       - World Object Controller 2/Meshes
+      - World Object Controller 2/Meshes/Sphere.mesh
+      - World Object Controller 2/Meshes/plane.mesh
       - World Object Controller 2/Meshes/touch_collision_cube.mesh
       - World Object Controller 2/Scripts
       - World Object Controller 2/Scripts/WorldObjectController.js
+      - World Object Controller 2/Shaders
+      - World Object Controller 2/Shaders/graph_matte_shadow.ss_graph
+      - World Object Controller 2/Shaders/ground_grid.ss_graph
+      - World Object Controller 2/Shaders/touch_collision.ss_graph
+      - World Object Controller 2/Shaders/uber_diffuse.ss_graph
+      - World Object Controller 2/Textures
+      - World Object Controller 2/Textures/Base.png
+      - World Object Controller 2/Textures/MaterialParams.png
+      - World Object Controller 2/Textures/Normal.png
+      - World Object Controller 2/Textures/ground_grid.png
       - World Object Controller 2/World Object Controller__ADD_TO_SCENE.prefab
       - World Object Controller/Materials
       - World Object Controller/Materials/graph_matte_shadow.mat
@@ -731,5 +722,6 @@ CollapsedEntities:
       - World Object Controller/World Object Controller__ADD_TO_SCENE.prefab
       - cog-2.png
       - flat.ss_graph
+      - listItem.ts
       - text_3d.ss_graph
   options: 4
