@@ -6,6 +6,7 @@ from typing import Dict, Optional
 import logging
 import wave
 import io
+from shared_state import CAPTIONS_BUFFER
 
 # Set up logging
 logging.basicConfig(
@@ -64,8 +65,9 @@ class ConnectionManager:
                 # Store transcription in buffer
                 data = json.loads(message)
                 if "text" in data and data["text"]:  # Only store non-empty complete transcriptions
-                    self.transcription_buffers[client_id].append(data["text"])
-                    print(f"Buffer updated: {self.transcription_buffers[client_id]}")  # Debug print
+                    # self.transcription_buffers[client_id].append(data["text"])
+                    CAPTIONS_BUFFER.append(data["text"])
+                    # print(f"Buffer updated: {self.transcription_buffers[client_id]}")  # Debug print
             except Exception as e:
                 print(f"Error sending message: {str(e)}")  # Debug print
                 await self.disconnect(client_id)

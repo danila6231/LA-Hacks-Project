@@ -17,6 +17,7 @@ from models.entry import (
 )
 from database import lectures_collection
 from services.gemini import process_image, process_audio, generate_summary, generate_questions, combine_transcripts
+from shared_state import CAPTIONS_BUFFER
 
 router = APIRouter()
 
@@ -167,3 +168,20 @@ async def end_lecture(snap_user_id: str):
         raise HTTPException(status_code=404, detail="No active lecture found")
     
     return {"status": "ended"}
+
+@router.post("/getAndClearTranscripts")
+async def get_and_clear_transcripts(snap_user_id: str, lecture_id: str):
+    lecture = await lectures_collection.find_one({
+        "snap_user_id": snap_user_id,
+        "lecture_id": lecture_id
+    })
+    
+    if not lecture:
+        raise HTTPException(status_code=404, detail="Lecture not found")
+    
+    output = "; ".join(CAPTIONS_BUFFER)
+    CAPTIONS_BUFFER.clear()
+    
+    return output
+
+
