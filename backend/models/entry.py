@@ -8,6 +8,9 @@ class LectureBase(BaseModel):
     start_time: datetime = Field(default_factory=datetime.utcnow)
     end_time: Optional[datetime] = None
     is_active: bool = True
+    ongoing_summary: str = ""  # Stores the continuously updated summary
+    recent_audio_chunks: List[bytes] = []  # Stores last 5 minutes of audio chunks
+    transcripts: List[str] = []  # Stores all transcripts for the lecture
 
 class LectureUpdate(BaseModel):
     audio_data: Optional[str] = None
@@ -19,7 +22,7 @@ class LectureSummary(BaseModel):
 
 class Question(BaseModel):
     question: str
-    pre_searched_answer: Optional[str] = None
+    answer: str
 
 class LectureResponse(BaseModel):
     lecture_id: str

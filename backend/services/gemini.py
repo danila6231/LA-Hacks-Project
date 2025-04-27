@@ -1,39 +1,126 @@
-import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 from typing import List, Tuple
+from google import genai
+from google.genai import types
+import base64
+import os
+from pathlib import Path
+import tempfile
 
 load_dotenv()
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel('gemini-pro')
+client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-async def generate_summary(transcript: str) -> str:
-    prompt = f"""
-    Please provide a concise summary of the following lecture transcript:
-    {transcript}
-    Focus on the main concepts and key takeaways.
-    """
-    response = await model.generate_content_async(prompt)
+def combine_transcripts(transcripts: List[str]) -> str:
+    response = client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents=[f"""
+            These are 5 consecutive transcripts for the last 5 minutes of the ongoing student lecture split by the semi-colon: {";".join(transcripts)}. There might be less than 5 if it's the beginning of the lecture. Combine these transcripts into a single coherent transcript.
+            """]
+    )
     return response.text
 
-async def generate_questions(transcript: str, num_questions: int = 3) -> List[Tuple[str, str]]:
-    prompt = f"""
-    Based on the following lecture transcript, generate {num_questions} relevant questions
-    that could help clarify or deepen understanding of the material, along with suggested answers:
-    {transcript}
-    Format: Return exactly {num_questions} questions and their answers.
-    """
-    response = await model.generate_content_async(prompt)
-    # In a real implementation, you'd want to parse this more robustly
-    questions_and_answers = []
-    # Simple parsing logic - in real implementation this should be more robust
-    qa_pairs = response.text.split("\n\n")
-    for qa in qa_pairs[:num_questions]:
-        if "?" in qa:
-            question = qa.split("?")[0] + "?"
-            answer = qa.split("?")[1].strip()
-            questions_and_answers.append((question, answer))
+async def process_image(img) -> str:
+    return "Not implemented"
+
+async def process_audio(audio) -> str:
+    try:
+        # For debugging - print the first few bytes
+        if audio is None:
+            return ""
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
+            content = await audio.read()
+            temp_file.write(content)
+            audio_path = temp_file.name
+            myfile = client.files.upload(file=audio_path)
+            print(f"Audio saved at: {audio_path}")
+            
+            # Seek back to start of file for later processing
+            await audio.seek(0)
+                
+        response = client.models.generate_content(
+            model="gemini-2.0-flash", contents=["Translate the audio to the english language. Do not use any other language", myfile]
+        )
+
+        return response.text
+        
+    except Exception as e:
+        print(f"Error in process_audio: {str(e)}")
+        return f"Error transcribing audio: {str(e)}"
     
-    return questions_and_answers 
+async def generate_summary(transcript: str, previous_summary: str = "") -> str:
+    try:
+        context = f"Previous summary: {previous_summary}\n\n" if previous_summary else ""
+        prompt = f"""
+        {context}Please provide a concise summary of the following university lecture transcript, integrating it with any previous summary if provided:
+        {transcript}
+        Focus on the main concepts and key takeaways. Keep the summary coherent and flowing naturally.
+        """
+        response = client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents=[prompt]
+        )
+        return response.text
+    except Exception as e:
+        print(f"Error in generate_summary: {str(e)}")
+        return previous_summary  # Return previous summary if error occurs
+
+async def generate_questions(
+    transcript: str,
+    current_questions: List[str] = None,
+    num_questions: int = 3  
+) -> List[Tuple[str, str]]:
+    # Prepare content for the model
+    content = []
+    
+    # Add transcript
+    prompt = f"""
+    Based on the following lecture content, generate 3-5 relevant questions
+    that could help clarify or deepen understanding of the material, along with suggested answers.
+    
+    Example questions and directions:
+    
+    {"Here are the existing questions from oldest to newest to consider and build upon:" if current_questions else ""}
+    {chr(10).join(f"- {q}" for q in current_questions) if current_questions else "No questions yes"}
+    
+    Lecture content of the last 5 minutes:
+    {transcript}
+    
+    Format: Return 2-3 questions if the are no questions. If there are already al least 3 than feel free to discard the oldest 2. Never return more than 5 questions.
+    Each question-answer pair should be separated by two newlines.
+    """
+    
+    content.append(prompt)
+    
+    generate_content_config = types.GenerateContentConfig(
+        response_mime_type="application/json",
+        response_schema=types.Schema(
+            type = types.Type.OBJECT,
+            properties = {
+                "qa-pair": types.Schema(
+                    type = types.Type.ARRAY,
+                    items = types.Schema(
+                        type = types.Type.OBJECT,
+                        properties = {
+                            "question": types.Schema(
+                                type = types.Type.STRING,
+                            ),
+                            "answer": types.Schema(
+                                type = types.Type.STRING,
+                            ),
+                        },
+                    ),
+                ),
+            },
+        ),
+    )
+    
+    response = client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents=[prompt],
+            config=generate_content_config
+    )
+    print(response.json())
+    
+    return response.json()
