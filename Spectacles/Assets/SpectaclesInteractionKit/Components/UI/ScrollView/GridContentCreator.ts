@@ -43,14 +43,14 @@ export class GridContentCreator extends BaseScriptComponent {
   private getQuestions() {
     let httpRequest = RemoteServiceHttpRequest.create();
     httpRequest.url =
-      "https://la-hacks-project.onrender.com/api/requestQuestions?snap_user_id=test_user&lecture_id=2e312afe-b903-4da3-959d-235e3e3f8fc6";
+      "https://la-hacks-project.onrender.com/api/requestQuestions?snap_user_id=Test_User&lecture_id=ff9f8362-dada-437c-bb43-c59a1dee43c1";
     httpRequest.method = RemoteServiceHttpRequest.HttpRequestMethod.Get;
     httpRequest.contentType = "application/json";
 
     this.serviceModule.performHttpRequest(httpRequest, (Response) => {
       if (Response.statusCode == 200) {
         this.json = JSON.parse(Response.body);
-        print(Response.body);
+        // print(Response.body);
         this.loadQuestions();
       }
     });
@@ -85,7 +85,7 @@ export class GridContentCreator extends BaseScriptComponent {
     const yStart = 0;
     const yOffset = -5.4;
     try {
-      print(this.json.length);
+      print(this.json);
       for (let i = 0; i < this.json.length; i++) {
         const item = this.itemPrefab.instantiate(this.getSceneObject());
         item.getChild(0).getComponent("Component.Text").text =

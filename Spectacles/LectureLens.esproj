@@ -15,7 +15,7 @@ viewConfig:
     fullFrameAspect: 0.666660
     resolutionScale: 1.000000
     viewport: Normal
-    output: Live
+    output: Capture
     stereoOutputEye: Center
     deviceTypeOverride: Spectacles
   cameraType: Back

@@ -1,7 +1,7 @@
 CollapsedEntities:
   type: stringset
   value:
-    size: 727
+    size: 726
     values:
       - Audio Analyzer.lspkg
       - Audio Analyzer.lspkg/Audio Analyzer Resources
@@ -644,6 +644,7 @@ CollapsedEntities:
       - Speech Recognition.lspkg/Speech Recognition__PLACE_IN_SCENE.prefab
       - Speech Recognition.lspkg/VoiceML Module.voiceMLModule
       - Speech Recognition.lspkg/package.native
+      - SummaryUI.ts
       - Text Texture 2.textTexture
       - Text Texture.textTexture
       - Text3D 2.mat
@@ -677,7 +678,6 @@ CollapsedEntities:
       - TweenManager 2/Tween/TweenTypes/TweenTransform.js
       - TweenManager 2/Tween/TweenTypes/TweenValue.js
       - TweenManager 2/TweenManager.prefab
-      - Untitled TypeScript.ts
       - VoiceML Module.voiceMLModule
       - WhiteLine512x4.png
       - World Object Controller
@@ -728,6 +728,5 @@ CollapsedEntities:
       - cog-2.png
       - flat.ss_graph
       - listItem.ts
-      - summaryUI.ts
       - text_3d.ss_graph
   options: 4
