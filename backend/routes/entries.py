@@ -171,14 +171,6 @@ async def end_lecture(snap_user_id: str):
 
 @router.post("/getAndClearTranscripts")
 async def get_and_clear_transcripts(snap_user_id: str, lecture_id: str):
-    lecture = await lectures_collection.find_one({
-        "snap_user_id": snap_user_id,
-        "lecture_id": lecture_id
-    })
-    
-    if not lecture:
-        raise HTTPException(status_code=404, detail="Lecture not found")
-    
     output = "; ".join(CAPTIONS_BUFFER)
     CAPTIONS_BUFFER.clear()
     

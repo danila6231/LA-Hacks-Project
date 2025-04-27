@@ -3,7 +3,8 @@ import { Button, Box } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import axios from 'axios';
-import { AUDIO_CHUNK_DURATION_MS, SNAP_USER_ID } from '../config';
+import { AUDIO_CHUNK_DURATION_MS, SNAP_USER_ID, LECTURE_ID} from '../config';
+console.log(LECTURE_ID);
 
 const Microphone: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
@@ -20,6 +21,7 @@ const Microphone: React.FC = () => {
     const wsRef = useRef<WebSocket | null>(null);
     const shortIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const isRecordingRef = useRef(false);
+    let counter = 0;
 
     const checkAudioLevel = () => {
         if (!analyserRef.current) return;
@@ -93,13 +95,6 @@ const Microphone: React.FC = () => {
 
     const startRecording = async () => {
         try {
-            // Start a new lecture session
-            const response = await axios.post('http://localhost:8000/api/startLecture', null, {
-                params: {
-                    snap_user_id: SNAP_USER_ID
-                }
-            });
-            setLectureId(response.data.lecture_id);
             // Set recording state first
             setIsRecording(true);
             isRecordingRef.current = true;
@@ -117,7 +112,7 @@ const Microphone: React.FC = () => {
 
             // Add WebSocket connection with improved error handling
             let isConnecting = false;
-            let reconnectAttempts = 0;
+            let reconnectAttempts = 5;
             const connectWebSocket = () => {
                 if (isConnecting) {
                     console.log('Already attempting to connect, skipping...');
@@ -142,7 +137,7 @@ const Microphone: React.FC = () => {
                     ws.onopen = () => {
                         console.log('WebSocket connected successfully');
                         isConnecting = false;
-                        reconnectAttempts = 0;
+                        reconnectAttempts = 5;
                     };
 
                     ws.onclose = (event) => {
@@ -208,8 +203,31 @@ const Microphone: React.FC = () => {
 
             checkAudioLevel();
 
+            // intervalRef.current = setInterval(() => {
+            //     if (audioData.length > 0) {
+            //         // Concatenate all audio data
+            //         const totalLength = audioData.reduce((acc, arr) => acc + arr.length, 0);
+            //         const concatenated = new Float32Array(totalLength);
+            //         let offset = 0;
+            //         audioData.forEach(arr => {
+            //             concatenated.set(arr, offset);
+            //             offset += arr.length;
+            //         });
+
+            //         // Create WAV blob
+            //         const wavBlob = createWavBlob(concatenated, audioContext.sampleRate);
+            //         setAudioChunks((prev) => [...prev, wavBlob]);
+
+            //         // Clear audio data
+            //         audioData.length = 0;
+            //     }
+            // }, 15000);
+
             // Add 2-second chunk collection and sending
             shortIntervalRef.current = setInterval(() => {
+                counter += 1;
+                console.log("Counter: ", counter);
+
                 if (audioData.length > 0 && wsRef.current?.readyState === WebSocket.OPEN) {
                     // Calculate how many chunks we need for 2 seconds
                     const chunksPerSecond = Math.ceil(audioContext.sampleRate / CHUNK_SIZE);
@@ -217,7 +235,7 @@ const Microphone: React.FC = () => {
 
                     // Get the last 2 seconds of audio
                     const startIndex = Math.max(0, audioData.length - targetChunks);
-                    const lastTwoSeconds = audioData.slice(startIndex);
+                    const lastTwoSeconds = audioData.slice(startIndex + 1);
 
                     // Concatenate the chunks
                     const totalLength = lastTwoSeconds.reduce((acc, arr) => acc + arr.length, 0);
@@ -231,10 +249,30 @@ const Microphone: React.FC = () => {
                     // Send raw PCM data
                     wsRef.current?.send(concatenated.buffer);
 
+                    if (counter % 30 === 0) {
+                        console.log("Sending audio to backend");
+                        const totalLength = audioData.reduce((acc, arr) => acc + arr.length, 0);
+                        const concatenated = new Float32Array(totalLength);
+                        let offset = 0;
+                        audioData.forEach(arr => {
+                            concatenated.set(arr, offset);
+                            offset += arr.length;
+                        });
+                        
+                        // Create WAV blob
+                        const wavBlob = createWavBlob(concatenated, audioContext.sampleRate);
+                        setAudioChunks((prev) => [...prev, wavBlob]);
+                        
+                        // Clear audio data
+                        audioData.length = 0;
+                    }
+
                     // Clear processed audio data
-                    audioData.splice(0, startIndex + 1);
+                    // audioData.splice(0, startIndex + 1);
                 }
-            }, AUDIO_CHUNK_DURATION_MS);
+            }, 500);
+            
+
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
@@ -278,10 +316,6 @@ const Microphone: React.FC = () => {
 
     const sendAudioToBackend = async (audioBlob: Blob) => {
         try {
-            if (!lectureId) {
-                console.error('No lecture ID available');
-                return;
-            }
 
             const formData = new FormData();
             const file = new File([audioBlob], "recording.wav", { type: "audio/wav" });
@@ -295,7 +329,7 @@ const Microphone: React.FC = () => {
                 {
                     params: {
                         snap_user_id: SNAP_USER_ID,
-                        lecture_id: lectureId
+                        lecture_id: LECTURE_ID
                     },
                     headers: {
                         'Content-Type': 'multipart/form-data',
