@@ -26,6 +26,7 @@
   CurrentVisibility: Editable
   MaxVisibility: Editable
   ScriptInputsHidden:
+    bottom: false
     content: false
     frame: false
   ScriptTypesHidden:
@@ -34,9 +35,11 @@
   DefaultScriptInputs:
     - frame: !<MappingBased.ContainerFrame> 00000000-0000-0000-0000-000000000000
       content: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      bottom: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
   ScriptTypes:
     -
       {}
   InputLines:
     - // @input ContainerFrame frame
     - // @input SceneObject content
+    - // @input SceneObject bottom

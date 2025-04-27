@@ -15,28 +15,27 @@ export class GridContentCreator extends BaseScriptComponent {
   itemPrefab!: ObjectPrefab;
   @input
   serviceModule!: RemoteServiceModule;
-  private json: Array<qapair>;
   private delayedEvent: DelayedCallbackEvent;
   private testJson: Array<qapair> = [
     {
       question:
-        "What is the significance of transitioning into a discussion about statistics and probabilities immediately after the introduction?",
+        "Combining transcripts helps in identifying patterns and themes relevant to statistics and probabilities.",
       answer:
         "The instructor is transitioning to a discussion of statistics and probabilities, which suggests this topic will be important for understanding the subsequent material, potentially related to the 'Liz' persona or later activities.",
     },
     {
       question:
-        "Why is it important to combine transcripts into a coherent segment when discussing statistics and probabilities?",
+        "Combining transcripts helps in identifying patterns and themes relevant to statistics and probabilities.",
       answer:
         "Combining transcripts helps in identifying patterns and themes relevant to statistics and probabilities. A coherent segment will give context and highlight relationships within the data that might be missed if analyzing individual transcripts.",
     },
     {
-      question:
-        "How does pretending to be 'Liz' and mentioning a 'test' relate to the topic of statistics and probabilities?",
+      question: "How does pretending to be  ",
       answer:
         "It is unclear. The segment involves the instructor pretending to be 'Liz' saying the test will be good and then mentioning playing something, followed by a generic encouragement. The relation of this segment to statistics is unclear.",
     },
   ];
+  private json: Array<qapair>;
 
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(this.onStart.bind(this));
@@ -75,7 +74,7 @@ export class GridContentCreator extends BaseScriptComponent {
 
   private deleteInstances() {
     const children = this.getSceneObject().getChildrenCount();
-    for (let i = children - 1; i > 0; i--) {
+    for (let i = children - 1; i >= 0; i--) {
       const child = this.getSceneObject().getChild(i);
       child.destroy();
     }
@@ -83,10 +82,10 @@ export class GridContentCreator extends BaseScriptComponent {
 
   private loadQuestions() {
     this.deleteInstances();
-    print(this.json);
     const yStart = 0;
     const yOffset = -5.4;
     try {
+      print(this.json.length);
       for (let i = 0; i < this.json.length; i++) {
         const item = this.itemPrefab.instantiate(this.getSceneObject());
         item.getChild(0).getComponent("Component.Text").text =

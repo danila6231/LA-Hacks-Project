@@ -205,6 +205,7 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Assets/Textures/SIKContainerExampleImage.jpg
       - SpectaclesInteractionKit/Assets/Textures/SIKLogo.png
       - SpectaclesInteractionKit/Assets/Textures/ScrollBarRectangle.png
+      - SpectaclesInteractionKit/Components
       - SpectaclesInteractionKit/Components/Helpers
       - SpectaclesInteractionKit/Components/Helpers/ButtonFeedback.ts
       - SpectaclesInteractionKit/Components/Helpers/CapsuleMeshCustomizer.ts
@@ -256,6 +257,7 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineMaterial.mat
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineRenderer.ts
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineVisual.ts
+      - SpectaclesInteractionKit/Components/UI
       - SpectaclesInteractionKit/Components/UI/ContainerFrame
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/ContainerFrame.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/Materials
@@ -300,6 +302,7 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SimpleLODRenderMeshVisual/SimpleLODRenderMeshVisual.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SmoothFollow.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SnappableBehavior.ts
+      - SpectaclesInteractionKit/Components/UI/PinchButton
       - SpectaclesInteractionKit/Components/UI/PinchButton/PinchButton.ts
       - SpectaclesInteractionKit/Components/UI/ScrollBar
       - SpectaclesInteractionKit/Components/UI/ScrollBar/ScrollBar.ts
@@ -650,6 +653,7 @@ CollapsedEntities:
       - TweenManager 2/.hidden
       - TweenManager 2/.hidden/Image Unlit.ss_graph
       - TweenManager 2/.hidden/TweenBoxDiffuse.ss_graph
+      - TweenManager 2/Tween
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]"
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]/ExampleTweenValueScript.js"
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]/Materials"
