@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, UploadFile, File
-from typing import Optional
+from typing import Optional, List
 import uuid
 from datetime import datetime
 import os
@@ -14,7 +14,7 @@ from models.entry import (
     LectureResponse,
 )
 from database import lectures_collection
-from services.gemini import process_audio
+from services.gemini import process_image, process_audio, generate_summary, generate_questions, combine_transcripts
 
 router = APIRouter()
 
@@ -33,7 +33,7 @@ async def update_info(
     snap_user_id: str,
     lecture_id: str,
     audio: Optional[UploadFile] = File(None, description="Audio file in WAV format"),
-    image: Optional[UploadFile] = File(None)
+    image_url: Optional[str] = None
 ):
     try:
         lecture = await lectures_collection.find_one({
@@ -51,24 +51,33 @@ async def update_info(
             if not audio.filename.lower().endswith('.wav'):
                 raise HTTPException(status_code=400, detail="Audio file must be in WAV format")
             
-            # Create a temporary file with .wav extension
-            
+            # Store audio chunk
+            audio_content = await audio.read()
+            await audio.seek(0)  # Reset for transcription
             
             # Process audio with Gemini
             try:
                 transcript = await process_audio(audio)
-                print(f"Transcript result: {transcript[:100]}...")  # Print first 100 chars
                 
-                # Only save transcript if it doesn't contain an error message
                 if not transcript.startswith("Error:"):
-                    update_data["transcript"] = transcript
+                    # Update transcripts list
+                    update_data["transcripts"] = lecture.get("transcripts", []) + [transcript]
+                    
+                    # Generate updated summary
+                    new_summary = await generate_summary(transcript, lecture.get("ongoing_summary", ""))
+                    update_data["ongoing_summary"] = new_summary
+                    
+                    # Update recent audio chunks (keep last 5)
+                    recent_chunks = lecture.get("recent_audio_chunks", [])
+                    recent_chunks.append(audio_content)
+                    if len(recent_chunks) > 5:  # Keep only last 5 minutes
+                        recent_chunks = recent_chunks[-5:]
+                    update_data["recent_audio_chunks"] = recent_chunks
             except Exception as e:
                 print(f"Gemini processing error: {str(e)}")
         
-        if image:
-            image_content = await image.read()
-            # In a real implementation, you'd want to store this in a proper storage service
-            update_data["image_data"] = image_content
+        if image_url:
+            update_data["image_url"] = image_url
         
         if update_data:
             await lectures_collection.update_one(
@@ -93,12 +102,12 @@ async def request_summary(snap_user_id: str, lecture_id: str):
     if not lecture:
         raise HTTPException(status_code=404, detail="Lecture not found")
     
-    # In a real implementation, you'd process the actual audio/transcript
-    # Here we're just using a placeholder
-    # summary = await generate_summary("Sample transcript")
-    return LectureSummary(text="summary", slides=[])
+    return LectureSummary(
+        text=lecture.get("ongoing_summary", "No summary available"),
+        slides=[]  # TODO: Implement slide extraction if needed
+    )
 
-@router.get("/requestQuestions")
+@router.get("/requestQuestions", response_model=List[Question])
 async def request_questions(snap_user_id: str, lecture_id: str):
     lecture = await lectures_collection.find_one({
         "snap_user_id": snap_user_id,
@@ -108,12 +117,36 @@ async def request_questions(snap_user_id: str, lecture_id: str):
     if not lecture:
         raise HTTPException(status_code=404, detail="Lecture not found")
     
-    # In a real implementation, you'd process the actual lecture content
-    # questions = await generate_questions("Sample transcript")
-    return [
-        Question(question=q, pre_searched_answer=a)
-        for q, a in []
+    # Get the last 5 transcripts
+    recent_transcripts = combine_transcripts(lecture.get("transcripts", [])[-5:])
+    if not recent_transcripts:
+        return []
+    
+    # Combine recent transcripts
+    combined_transcript = "\n".join(recent_transcripts)
+    
+    # Get existing questions if any
+    existing_questions = [q["question"] for q in lecture.get("questions", [])]
+    
+    # Generate new questions based on recent content
+    questions_and_answers = await generate_questions(
+        transcript=combined_transcript,
+        current_questions=existing_questions
+    )
+    
+    # Format response
+    formatted_questions = [
+        Question(question=q["question"], answer=q["answer"])
+        for q in questions_and_answers["qa-pair"]
     ]
+    
+    # Update the lecture document with new questions
+    await lectures_collection.update_one(
+        {"lecture_id": lecture_id},
+        {"$set": {"questions": [q.dict() for q in formatted_questions]}}
+    )
+    
+    return formatted_questions
 
 @router.post("/endLecture")
 async def end_lecture(snap_user_id: str):
@@ -134,38 +167,3 @@ async def end_lecture(snap_user_id: str):
         raise HTTPException(status_code=404, detail="No active lecture found")
     
     return {"status": "ended"}
-
-# @router.post("/debug/upload")
-# async def debug_upload(
-#     test_param: str,
-#     audio: Optional[UploadFile] = File(None)
-# ):
-#     try:
-#         result = {
-#             "test_param": test_param,
-#             "audio_received": False
-#         }
-        
-#         if audio:
-#             result["audio_received"] = True
-#             result["audio_filename"] = audio.filename
-#             result["audio_content_type"] = audio.content_type
-#             audio_content = await audio.read()
-#             result["audio_size"] = len(audio_content)
-            
-#             # Test audio transcription
-#             try:
-#                 print("Attempting to transcribe audio...")
-#                 transcript = await process_audio(audio_content)
-#                 print(f"Transcript result: {transcript[:100]}...")
-#                 result["transcript"] = transcript
-#                 result["transcription_success"] = not transcript.startswith("Error:")
-#             except Exception as e:
-#                 result["transcription_error"] = str(e)
-        
-#         return result
-#     except Exception as e:
-#         print(f"Debug upload error: {str(e)}")
-#         import traceback
-#         print(traceback.format_exc())
-#         return {"error": str(e)} 

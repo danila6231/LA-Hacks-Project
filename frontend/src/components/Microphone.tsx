@@ -142,7 +142,7 @@ const Microphone: React.FC = () => {
                     // Clear audio data
                     audioData.length = 0;
                 }
-            }, 30000);
+            }, 4500);
 
         } catch (error) {
             console.error('Error accessing microphone:', error);
