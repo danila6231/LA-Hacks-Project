@@ -1,0 +1,16 @@
+- !<AssetImportMetadata/4e2bc2be-1bb5-4ece-8c74-604659138d26>
+  ImportedAssetIds:
+    Texture: !<reference> 14c1035a-c048-4026-84a8-f44dfc9c8519
+  ImporterName: ImagePickerTextureImporter
+  PrimaryAsset: !<reference> 14c1035a-c048-4026-84a8-f44dfc9c8519
+  PackageType: NotAPackage
+  PackagePolicy: CannotBeUnpacked
+  ExtraData:
+    {}
+  AssetDataMap:
+    {}
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000

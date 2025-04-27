@@ -4,24 +4,6 @@
     - !<own> 4fb9ce88-4941-49e3-a79d-282323d5af23
 - !<PassInfo/4fb9ce88-4941-49e3-a79d-282323d5af23>
   CachedProperties:
-    - PreviewEnabled:
-        typeIdx: 0
-        value: 0
-    - baseColor:
-        typeIdx: 5
-        value: {x: 1.000000, y: 0.521202, z: 1.000000, w: 1.000000}
-    - baseTex:
-        typeIdx: 9
-        value:
-          id: aac25cc7-eb91-4258-a1ee-3431df65a84d
-          sampler:
-            filteringMode: Trilinear
-            wrapModeU: Repeat
-            wrapModeV: Repeat
-            wrapModeW: Repeat
-            borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
-            mipmaps: false
-          type: Texture2D
     - baseTexBorderColor:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -37,24 +19,6 @@
     - baseTexUvMinMax:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-    - emissiveColor:
-        typeIdx: 4
-        value: {x: 1.000000, y: 0.521202, z: 1.000000}
-    - emissiveIntensity:
-        typeIdx: 1
-        value: 0.500000
-    - emissiveTex:
-        typeIdx: 9
-        value:
-          id: aac25cc7-eb91-4258-a1ee-3431df65a84d
-          sampler:
-            filteringMode: Trilinear
-            wrapModeU: Repeat
-            wrapModeV: Repeat
-            wrapModeW: Repeat
-            borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
-            mipmaps: false
-          type: Texture2D
     - emissiveTexBorderColor:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -70,18 +34,6 @@
     - emissiveTexUvMinMax:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-    - materialParamsTex:
-        typeIdx: 9
-        value:
-          id: 0fc0b9ee-ef44-44c1-b777-24df76247ff0
-          sampler:
-            filteringMode: Trilinear
-            wrapModeU: Repeat
-            wrapModeV: Repeat
-            wrapModeW: ClampToEdge
-            borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
-            mipmaps: false
-          type: Texture2D
     - materialParamsTexBorderColor:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -97,18 +49,6 @@
     - materialParamsTexUvMinMax:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-    - normalTex:
-        typeIdx: 9
-        value:
-          id: e55498d9-724e-4a2a-a566-fdd72a37d423
-          sampler:
-            filteringMode: Trilinear
-            wrapModeU: Repeat
-            wrapModeV: Repeat
-            wrapModeW: Repeat
-            borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
-            mipmaps: false
-          type: Texture2D
     - normalTexBorderColor:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
@@ -133,15 +73,6 @@
     - overrideTimeEnabled:
         typeIdx: 0
         value: 0
-    - rimColor:
-        typeIdx: 4
-        value: {x: 1.000000, y: 1.000000, z: 1.000000}
-    - rimExponent:
-        typeIdx: 1
-        value: 2.730000
-    - rimIntensity:
-        typeIdx: 1
-        value: 0.640000
     - uv2Offset:
         typeIdx: 3
         value: {x: 1.000000, y: 1.000000}
@@ -182,5 +113,73 @@
     - ENABLE_EMISSIVE
   BlendMode: Disabled
   Properties:
-    {}
+    PreviewEnabled:
+      typeIdx: 0
+      value: 0
+    baseColor:
+      typeIdx: 5
+      value: {x: 1.000000, y: 0.521202, z: 1.000000, w: 1.000000}
+    baseTex:
+      typeIdx: 9
+      value:
+        id: aac25cc7-eb91-4258-a1ee-3431df65a84d
+        sampler:
+          filteringMode: Trilinear
+          wrapModeU: Repeat
+          wrapModeV: Repeat
+          wrapModeW: Repeat
+          borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
+          mipmaps: false
+        type: Texture2D
+    emissiveColor:
+      typeIdx: 4
+      value: {x: 1.000000, y: 0.521202, z: 1.000000}
+    emissiveIntensity:
+      typeIdx: 1
+      value: 0.500000
+    emissiveTex:
+      typeIdx: 9
+      value:
+        id: aac25cc7-eb91-4258-a1ee-3431df65a84d
+        sampler:
+          filteringMode: Trilinear
+          wrapModeU: Repeat
+          wrapModeV: Repeat
+          wrapModeW: Repeat
+          borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
+          mipmaps: false
+        type: Texture2D
+    materialParamsTex:
+      typeIdx: 9
+      value:
+        id: 0fc0b9ee-ef44-44c1-b777-24df76247ff0
+        sampler:
+          filteringMode: Trilinear
+          wrapModeU: Repeat
+          wrapModeV: Repeat
+          wrapModeW: ClampToEdge
+          borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
+          mipmaps: false
+        type: Texture2D
+    normalTex:
+      typeIdx: 9
+      value:
+        id: e55498d9-724e-4a2a-a566-fdd72a37d423
+        sampler:
+          filteringMode: Trilinear
+          wrapModeU: Repeat
+          wrapModeV: Repeat
+          wrapModeW: Repeat
+          borderColor: {x: 0.000000, y: 0.000000, z: 0.000000, w: 0.000000}
+          mipmaps: false
+        type: Texture2D
+    rimColor:
+      typeIdx: 4
+      value: {x: 1.000000, y: 1.000000, z: 1.000000}
+    rimExponent:
+      typeIdx: 1
+      value: 2.730000
+    rimIntensity:
+      typeIdx: 1
+      value: 0.640000
   Pass: !<reference> 0c0b0dd2-25be-4a0c-a469-491427ee673b
