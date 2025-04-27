@@ -3,12 +3,13 @@ import { Button, Box } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import axios from 'axios';
-import { AUDIO_CHUNK_DURATION_MS } from '../config';
+import { AUDIO_CHUNK_DURATION_MS, SNAP_USER_ID } from '../config';
 
 const Microphone: React.FC = () => {
     const [isRecording, setIsRecording] = useState(false);
     const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [lectureId, setLectureId] = useState<string | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -89,6 +90,14 @@ const Microphone: React.FC = () => {
 
     const startRecording = async () => {
         try {
+            // Start a new lecture session
+            const response = await axios.post('http://localhost:8000/api/startLecture', null, {
+                params: {
+                    snap_user_id: SNAP_USER_ID
+                }
+            });
+            setLectureId(response.data.lecture_id);
+
             const stream = await navigator.mediaDevices.getUserMedia({
                 audio: {
                     sampleRate: 44100,
@@ -178,8 +187,12 @@ const Microphone: React.FC = () => {
 
     const sendAudioToBackend = async (audioBlob: Blob) => {
         try {
+            if (!lectureId) {
+                console.error('No lecture ID available');
+                return;
+            }
+
             const formData = new FormData();
-            // Add filename to help FastAPI recognize the file
             const file = new File([audioBlob], "recording.wav", { type: "audio/wav" });
             formData.append('audio', file);
 
@@ -190,8 +203,8 @@ const Microphone: React.FC = () => {
                 formData,
                 {
                     params: {
-                        snap_user_id: 'test1',
-                        lecture_id: '1c10180b-32f4-47b0-948f-f3ea1f271a3e'
+                        snap_user_id: SNAP_USER_ID,
+                        lecture_id: lectureId
                     },
                     headers: {
                         'Content-Type': 'multipart/form-data',
