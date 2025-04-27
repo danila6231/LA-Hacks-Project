@@ -1,7 +1,7 @@
 CollapsedEntities:
   type: stringset
   value:
-    size: 736
+    size: 729
     values:
       - 3D Text Layout
       - 9 Slicing Material
@@ -54,12 +54,12 @@ CollapsedEntities:
       - Object Layout
       - Object Layout/.hidden
       - Object Layout/Object Layout Resources
+      - QAPanel.ts
       - QuestionMark512.png
       - Remote Service Module.remoteServiceModule
       - Render Target.renderTarget
       - Scene.scene
       - Script.js
-      - SpectaclesInteractionKit
       - SpectaclesInteractionKit/Assets
       - SpectaclesInteractionKit/Assets/Audio
       - SpectaclesInteractionKit/Assets/Audio/HoverAudioTrack.wav
@@ -215,7 +215,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Assets/Textures/SIKContainerExampleImage.jpg
       - SpectaclesInteractionKit/Assets/Textures/SIKLogo.png
       - SpectaclesInteractionKit/Assets/Textures/ScrollBarRectangle.png
-      - SpectaclesInteractionKit/Components
       - SpectaclesInteractionKit/Components/Helpers
       - SpectaclesInteractionKit/Components/Helpers/ButtonFeedback.ts
       - SpectaclesInteractionKit/Components/Helpers/CapsuleMeshCustomizer.ts
@@ -267,7 +266,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineMaterial.mat
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineRenderer.ts
       - SpectaclesInteractionKit/Components/Interaction/InteractorLineVisual/InteractorLineVisual.ts
-      - SpectaclesInteractionKit/Components/UI
       - SpectaclesInteractionKit/Components/UI/ContainerFrame
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/ContainerFrame.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/Materials
@@ -312,7 +310,6 @@ CollapsedEntities:
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SimpleLODRenderMeshVisual/SimpleLODRenderMeshVisual.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SmoothFollow.ts
       - SpectaclesInteractionKit/Components/UI/ContainerFrame/modules/SnappableBehavior.ts
-      - SpectaclesInteractionKit/Components/UI/PinchButton
       - SpectaclesInteractionKit/Components/UI/PinchButton/PinchButton.ts
       - SpectaclesInteractionKit/Components/UI/ScrollBar
       - SpectaclesInteractionKit/Components/UI/ScrollBar/ScrollBar.ts
@@ -661,12 +658,9 @@ CollapsedEntities:
       - Text3D 2.mat
       - Text3D 3.mat
       - Text3D.mat
-      - TweenManager
-      - TweenManager 2
       - TweenManager 2/.hidden
       - TweenManager 2/.hidden/Image Unlit.ss_graph
       - TweenManager 2/.hidden/TweenBoxDiffuse.ss_graph
-      - TweenManager 2/Tween
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]"
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]/ExampleTweenValueScript.js"
       - "TweenManager 2/Tween/ExampleResources [REMOVE_ME]/Materials"
@@ -693,7 +687,6 @@ CollapsedEntities:
       - TweenManager/.hidden
       - TweenManager/.hidden/Image Unlit.ss_graph
       - TweenManager/.hidden/TweenBoxDiffuse.ss_graph
-      - TweenManager/Tween
       - "TweenManager/Tween/ExampleResources [REMOVE_ME]"
       - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Materials"
       - "TweenManager/Tween/ExampleResources [REMOVE_ME]/Meshes"
