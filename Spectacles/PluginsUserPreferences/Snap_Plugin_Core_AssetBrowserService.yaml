@@ -1,5 +1,6 @@
 ExternalSources:
-  type: "std::map<class Es::Uuid,class Es::Path,struct std::less<class Es::Uuid>,class std::allocator<struct std::pair<class Es::Uuid const ,class Es::Path> > >"
+  type: "std::map<Es::Uuid, Es::Path>"
   value:
-    - 17f6319e-741c-4a40-b312-ed2ca7aa7b6b: "C:/Users/olive/Downloads/QuestionMark512.png"
+    - 36201238-23ad-4999-a32c-25edd839bac3: /Users/madu/Downloads/cog-2.png
+    - 4790e538-b295-42ca-b52a-ddae52eed533: /Users/madu/Downloads/WhiteLine512x4.png
   options: 4
