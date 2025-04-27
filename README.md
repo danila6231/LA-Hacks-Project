@@ -1,4 +1,5 @@
-# AR Classroom Assistant
+# Pedagoggles
+AR Classroom Assistant
 
 A real-time classroom assistance system that provides live captioning, translation, and note-taking through AR glasses.
 
@@ -14,6 +15,7 @@ A real-time classroom assistance system that provides live captioning, translati
 ```
 /backend - FastAPI server with speech recognition and AI capabilities
 /frontend - React TypeScript application for audio capture and processing
+/Spectacles - Lens Studio assets
 ```
 
 ## Setup Instructions
@@ -78,4 +80,5 @@ A real-time classroom assistance system that provides live captioning, translati
 - React with TypeScript (Frontend)
 - Google Gemini AI
 - MongoDB
+- Snapchat Lens Studio
 - WebSockets for real-time communication
