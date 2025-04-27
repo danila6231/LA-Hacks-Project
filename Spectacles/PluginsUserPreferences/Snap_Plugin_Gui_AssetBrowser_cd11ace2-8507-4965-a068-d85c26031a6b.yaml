@@ -1,7 +1,7 @@
 CollapsedEntities:
   type: stringset
   value:
-    size: 682
+    size: 688
     values:
       - Audio Analyzer.lspkg
       - Audio Analyzer.lspkg/Audio Analyzer Resources
@@ -43,17 +43,17 @@ CollapsedEntities:
       - Hint - Draw on the Wall/Custom Hint Resources/Scripts
       - Hint - Draw on the Wall/Custom Hint Resources/Scripts/CustomHint.js
       - Hint - Draw on the Wall/Hint - Draw on the Wall.prefab
+      - Image Picker Texture.imagePickerTexture
       - Microphone Audio.micaudio
+      - QuestionMark512.png
       - Remote Service Module.remoteServiceModule
       - Render Target.renderTarget
       - Scene.scene
       - Script.js
-      - SpectaclesInteractionKit/Assets
       - SpectaclesInteractionKit/Assets/Audio
       - SpectaclesInteractionKit/Assets/Audio/HoverAudioTrack.wav
       - SpectaclesInteractionKit/Assets/Audio/TriggerEndAudioTrack.wav
       - SpectaclesInteractionKit/Assets/Audio/TriggerStartAudioTrack.wav
-      - SpectaclesInteractionKit/Assets/Materials
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials/FingerHighlightLeft.mat
       - SpectaclesInteractionKit/Assets/Materials/BaseHandVisualsMaterials/FingerHighlightRight.mat
@@ -638,6 +638,11 @@ CollapsedEntities:
       - Speech Recognition.lspkg/Speech Recognition__PLACE_IN_SCENE.prefab
       - Speech Recognition.lspkg/VoiceML Module.voiceMLModule
       - Speech Recognition.lspkg/package.native
+      - Text Texture 2.textTexture
+      - Text Texture.textTexture
+      - Text3D 2.mat
+      - Text3D 3.mat
+      - Text3D.mat
       - VoiceML Module.voiceMLModule
       - World Object Controller
       - World Object Controller 2/Materials
@@ -685,4 +690,5 @@ CollapsedEntities:
       - World Object Controller/Textures/ground_grid.png
       - World Object Controller/World Object Controller__ADD_TO_SCENE.prefab
       - cog-2.png
+      - text_3d.ss_graph
   options: 4

@@ -1,6 +1,6 @@
 backCameraMultimedia:
   type: string
-  value: PreviewResources.bundle/Video/World/Beach.mp4
+  value: PreviewResources.bundle/Video/Idle/Idle.mp4
   options: 4
 cameraType:
   type: int
@@ -24,11 +24,11 @@ fullscreenSpectaclesSimulation:
   options: 4
 lastPosition:
   type: vec3
-  value: {x: -1.492008, y: 0.000000, z: 53.979282}
+  value: {x: -12.425838, y: 0.000000, z: 11.183977}
   options: 4
 lastRotation:
   type: vec3
-  value: {x: -0.149875, y: -1.199947, z: -0.000002}
+  value: {x: -2.400001, y: 23.250042, z: -0.000002}
   options: 4
 mirrorHorizontally:
   type: bool
