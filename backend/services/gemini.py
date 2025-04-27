@@ -7,7 +7,7 @@ import base64
 import os
 from pathlib import Path
 import tempfile
-from config import GEMINI_MODEL, GEMINI_LIGHT_MODEL
+from config import GEMINI_MODEL, GEMINI_LIGHT_MODEL, SYSTEM_PROMPT
 
 load_dotenv()
 
@@ -16,6 +16,7 @@ client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 def combine_transcripts(transcripts: List[str]) -> str:
     response = client.models.generate_content(
             model=GEMINI_MODEL,
+            config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
             contents=[f"""
             These are 5 consecutive transcripts for the last 5 minutes of the ongoing student lecture split by the semi-colon: {";".join(transcripts)}. There might be less than 5 if it's the beginning of the lecture. Combine these transcripts into a single coherent transcript.
             """]
@@ -57,9 +58,18 @@ async def generate_summary(transcript: str, previous_summary: str = "") -> str:
         {context}Please provide a concise summary of the following university lecture transcript, integrating it with any previous summary if provided:
         {transcript}
         Focus on the main concepts and key takeaways. Keep the summary coherent and flowing naturally.
+        
+        Don't try to use markdown. Lenses don't support it.
+        
+        Don't try to keep it too short - keep it as long as needed.
+        
+        Try to keep the summary well structured - try to use new lines and bullet points. 
+        
+        Avoid using the word "summary" in the response. Don't start the response with "Summary, Here is the summary...".
         """
         response = client.models.generate_content(
             model=GEMINI_MODEL,
+            config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT),
             contents=[prompt]
         )
         return response.text
@@ -95,9 +105,9 @@ async def generate_questions(
     """
     
     content.append(prompt)
-    
     generate_content_config = types.GenerateContentConfig(
         response_mime_type="application/json",
+        system_instruction=SYSTEM_PROMPT,
         response_schema=types.Schema(
             type = types.Type.OBJECT,
             properties = {
