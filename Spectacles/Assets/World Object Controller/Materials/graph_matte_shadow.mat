@@ -58,15 +58,6 @@
     - mainColor:
         typeIdx: 5
         value: {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
-    - overrideTimeDelta:
-        typeIdx: 1
-        value: 0.000000
-    - overrideTimeElapsed:
-        typeIdx: 1
-        value: 0.000000
-    - overrideTimeEnabled:
-        typeIdx: 0
-        value: 0
     - receivesRayTracedAo:
         typeIdx: 2
         value: false
@@ -99,6 +90,15 @@
       typeIdx: 1
       value: 1.000000
     PreviewEnabled:
+      typeIdx: 0
+      value: 0
+    overrideTimeDelta:
+      typeIdx: 1
+      value: 0.000000
+    overrideTimeElapsed:
+      typeIdx: 1
+      value: 0.000000
+    overrideTimeEnabled:
       typeIdx: 0
       value: 0
   Pass: !<reference> 0c82f8de-a77e-478d-9ea4-8bab218140b8

@@ -1,6 +1,6 @@
 backCameraMultimedia:
   type: string
-  value: PreviewResources.bundle/Video/Idle/Idle.mp4
+  value: PreviewResources.bundle/Video/World/Beach.mp4
   options: 4
 cameraType:
   type: int
@@ -24,11 +24,11 @@ fullscreenSpectaclesSimulation:
   options: 4
 lastPosition:
   type: vec3
-  value: {x: -7.398931, y: 0.000000, z: -22.075098}
+  value: {x: -21.339478, y: 0.000000, z: -77.688103}
   options: 4
 lastRotation:
   type: vec3
-  value: {x: 0.599738, y: 32.699249, z: -0.000003}
+  value: {x: -8.400141, y: 18.150253, z: -0.000003}
   options: 4
 mirrorHorizontally:
   type: bool
@@ -36,7 +36,7 @@ mirrorHorizontally:
   options: 4
 previewSource:
   type: string
-  value: "C:/Program Files/Snap Inc/Lens Studio/InteractiveResources.bundle/Scenes/Sunlit Room"
+  value: /Applications/Lens Studio.app/Contents/MacOS/../Resources/InteractiveResources.bundle/Scenes/Sunlit Room
   options: 4
 previewType:
   type: string
