@@ -10,11 +10,15 @@ import tempfile
 
 load_dotenv()
 
+#PRO_MODEL = "gemini-2.5-pro-exp-03-25"
+MODEL = "gemini-2.0-flash"
+LIGHT_MODEL = "gemini-2.0-flash"
+
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 def combine_transcripts(transcripts: List[str]) -> str:
     response = client.models.generate_content(
-            model="gemini-2.5-pro",
+            model=MODEL,
             contents=[f"""
             These are 5 consecutive transcripts for the last 5 minutes of the ongoing student lecture split by the semi-colon: {";".join(transcripts)}. There might be less than 5 if it's the beginning of the lecture. Combine these transcripts into a single coherent transcript.
             """]
@@ -40,7 +44,7 @@ async def process_audio(audio) -> str:
             await audio.seek(0)
                 
         response = client.models.generate_content(
-            model="gemini-2.0-flash", contents=["Translate the audio to the english language. Do not use any other language", myfile]
+            model=LIGHT_MODEL, contents=["Translate the audio to the english language. Do not use any other language", myfile]
         )
 
         return response.text
@@ -58,7 +62,7 @@ async def generate_summary(transcript: str, previous_summary: str = "") -> str:
         Focus on the main concepts and key takeaways. Keep the summary coherent and flowing naturally.
         """
         response = client.models.generate_content(
-            model="gemini-2.5-pro",
+            model=MODEL,
             contents=[prompt]
         )
         return response.text
@@ -87,8 +91,10 @@ async def generate_questions(
     Lecture content of the last 5 minutes:
     {transcript}
     
-    Format: Return 2-3 questions if the are no questions. If there are already al least 3 than feel free to discard the oldest 2. Never return more than 5 questions.
-    Each question-answer pair should be separated by two newlines.
+    Make sure that each question is targeted to a different concept inside the lecture. Avoid questions that are too similar or overlap. Suggest only the questions THAT ARE NOT ALREADY ANSWERED in the existing questions or in the lecture.
+    
+    
+    TASK: Return 2-3 questions if the are no questions. If there are already al least 3 than feel free to discard the oldest 2. Never return more than 5 questions. Keep each question and answer short and concise.
     """
     
     content.append(prompt)
@@ -110,6 +116,7 @@ async def generate_questions(
                                 type = types.Type.STRING,
                             ),
                         },
+                        required = ["question", "answer"]
                     ),
                 ),
             },
@@ -117,10 +124,10 @@ async def generate_questions(
     )
     
     response = client.models.generate_content(
-            model="gemini-2.5-pro",
+            model=MODEL,
             contents=[prompt],
             config=generate_content_config
     )
-    print(response.json())
     
-    return response.json()
+    # Extract qa-pairs from the response
+    return response.text
