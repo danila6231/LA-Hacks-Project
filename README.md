@@ -2,7 +2,7 @@
 AR Classroom Assistant build for the Snap Spectacles
 
 A real-time classroom assistance system that provides live captioning, translation, and note-taking through AR glasses.
-![Screenshot 2025-04-27 at 12 29 37 PM](https://github.com/user-attachments/assets/c8e77e48-54cf-4195-8b93-28942cb6895b)
+![Screenshot 2025-04-27 at 12 29 37 PM](https://github.com/user-attachments/assets/c8e77e48-54cf-4195-8b93-28942cb6895b =250x)
 
 ## Features
 
